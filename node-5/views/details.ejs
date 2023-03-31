@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> <%= title %> </title>
+</head>
+<body>
+  <Nav>
+    <div class="site-title">
+      <a href="/"><h1>Blog Ninja</h1></a>
+      <p>A Net Ninja Site</p>
+    </div>
+    <ul>
+      <li><a href="/">Blogs</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blogs/create">New Blog</a></li>
+    </ul>
+  </Nav>
+  
+  <div class="about content">
+    <h2> <%= blog.title %> </h2>
+    <p> <%= blog.body %> </p> <br />
+    <a class="delete" data-doc="<%= blog._id %>">Delete</a>
+    <!-- The 'data' attribute is an attribute in html that allows us add our own custom attributes. we have created a custom attribute; 'doc' -->
+  </div>
+
+  <script>
+    const trashcan = document.querySelector('a.delete');
+    trashcan.addEventListener('click', (e) => {
+      const endpoint = `/blog/${trashcan.dataset.doc}` //dataset.doc is how to access our custom attr.
+      // we will use the fetch api to send delete request to 'endpoint'
+      fetch(endpoint, {method: 'DELETE'}) //this is an ajax request. we need a json back from server. 
+        .then(response=>response.json())
+        .then(data=>window.location.href = data.redirect) //redirect to blogs from frontend
+        .catch(err=> console.log(err.message))
+    });
+  </script>
+
+</body>
+</html>
